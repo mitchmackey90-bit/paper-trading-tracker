@@ -27,3 +27,4 @@
 - 2026-10-12T14:07:33Z — total $497.44, cash $20.00 (Bot1 mark, no trade; FRO 59.09, DHT 26.17, ASTS 53.22, MDT 92.15 marked; no stops/targets hit)
 - 2026-10-12T14:12:46Z — total $499.22, cash $20.00 (Bot2 mark, no trade; FRO 59.24, DHT 26.22, ASTS 53.92, MDT 91.92 marked; no stops/targets hit)
 - 2026-10-12T14:15:11Z — total $498.81, cash $20.00 (Bot4 mark, no trade; FRO 59.30, DHT 26.25, ASTS 53.73, MDT 91.53 marked; no stops/targets hit)
+- 2026-10-12T14:17:38Z — total $500.03, cash $20.00 (Jr mark, no trade; FRO 59.43, DHT 26.33, ASTS 54.10, MDT 91.23 marked; no stops/targets hit — MDT 0.03 above its 91.20 stop)
