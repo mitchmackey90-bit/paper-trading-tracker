@@ -81,3 +81,4 @@
 - 2026-10-12T17:38:21Z — total $491.76, cash $98.62 (Bot4 mark, no trade; FRO 58.32, DHT 25.66, ASTS 53.18 marked; no stops/targets hit)
 - 2026-10-12T17:38:16Z — total $491.73, cash $98.62 (Stock Bot mark, no trade; FRO 58.32, DHT 25.66, ASTS 53.165 marked; no stops/targets hit)
 - 2026-10-12T17:42:16Z — total $493.05, cash $98.62 (Bot2 mark, no trade; FRO 58.58, DHT 25.835, ASTS 53.00 marked; no stops/targets hit — tankers bouncing off afternoon lows, ASTS drifting toward 52.77 LOD, 0.60 above stop)
+- 2026-10-12T17:43:32Z — total $493.40, cash $98.62 (Jr mark, no trade; FRO 58.62, DHT 25.865, ASTS 53.0399 marked; no stops/targets hit — tankers bouncing off 17:37–17:39 afternoon lows, ASTS still under entry near LOD 52.77)
