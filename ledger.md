@@ -166,3 +166,5 @@
 - 2026-10-12T20:51:31Z — total $495.62, cash $196.95 (Bot1 post-close mark, 3:51 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; AH FRO 59.35 / DHT 26.47 noted, not used; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
 - 2026-10-12T20:51:53Z — total $495.62, cash $196.95 (Bot2 post-close mark, 3:51 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
 - 2026-10-12T20:54:11Z — total $495.62, cash $196.95 (Bot4 post-close mark, 3:54 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
+
+- 2026-10-12T20:58:52Z — total $495.62, cash $196.95 (Jr post-close mark, 3:58 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
