@@ -117,3 +117,4 @@
 
 - 2026-10-12T19:02:16Z — total $493.60, cash $196.95 (Jr mark, 2:02 PM CT, no trade; FRO 58.805, DHT 26.035 marked; no stops/targets hit — DHT still coiled above ~26.0 under entry, FRO still under ~58.9 coil; Jr add condition unmet)
 - 2026-10-12T19:03:42Z — total $493.66, cash $196.95 (Bot4 mark, 2:03 PM CT, no trade; FRO 58.81, DHT 26.045 marked; no stops/targets hit — FRO flat 58.76–58.83 under ~58.9 coil, DHT holding ~26.04 above the ~26.0 shelf, both still under entry; cash idle, no fresh catalyst)
+- 2026-10-12T19:04:27Z — total $493.66, cash $196.95 (Stock Bot mark, 2:04 PM CT, no trade; FRO 58.81, DHT 26.045 marked; no stops/targets hit — both flat in 3:00 PM ET window on light volume, still under entry; SPY 777.31 hugging LOD 777.05)
