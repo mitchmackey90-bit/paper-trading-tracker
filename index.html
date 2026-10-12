@@ -1,14 +1,78 @@
 <!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<meta http-equiv=refresh content=60><title>Paper Trading Tracker</title>
-<style>body{font-family:system-ui;max-width:700px;margin:auto;padding:12px}img{width:100%}pre{white-space:pre-wrap;background:#f4f4f4;padding:8px;font-size:13px;overflow-x:auto}</style></head><body>
-<h1>Paper account (pretend $500)</h1><h2 style="color:#16a34a">$500.00 &nbsp; +$0.00 (+0.00%)</h2>
-<p>Cash: $100.00 · Updated 2026-10-12T13:55:49Z</p><img src="chart.png?t=2026-10-12T13:55:49Z" alt=chart>
-<h3>Holdings</h3><pre>| ticker | qty | avg_cost | cost_basis | stop | target |
-|---|---|---|---|---|---|
-| FRO | 2.6923 | 59.429 | 160.00 | 57.90 | 62.50 |
-| DHT | 5.3131 | 26.35 | 140.00 | 25.40 | 27.80 |
-| ASTS | 1.8765 | 53.29 | 100.00 | 52.40 | 56.50 |</pre><h3>Trades log</h3><pre>| time_utc | action | ticker | qty | price | total | reason |
-|---|---|---|---|---|---|---|
-| 2026-10-12T13:55:49Z | BUY | FRO | 2.6923 | 59.429 | 160.00 | Day gainer +5.9% (prev close 56.10), tanker sector strength alongside DHT; grinding to new intraday highs (last 5m closes 58.77→59.43, HOD 59.53). Momentum continuation. Stop 57.90 (below day low 58.00), target 62.50. Price: Yahoo Finance chart API 13:55 UTC. |
-| 2026-10-12T13:55:49Z | BUY | DHT | 5.3131 | 26.35 | 140.00 | Day gainer +7.0% (prev 24.64), same tanker theme; holding near HOD 26.46 after reclaiming 26.3. Stop 25.40 (under day low 25.50), target 27.80. Price: Yahoo Finance 13:55 UTC. |
-| 2026-10-12T13:55:49Z | BUY | ASTS | 1.8765 | 53.29 | 100.00 | +4.4% gainer, heavy volume (~7M shares in 25 min). Pulled back from HOD 54.67, holding above day low 52.81 — smaller size since momentum fading. Stop 52.40, target 56.50. Price: Yahoo Finance 13:55 UTC. |</pre></body></html>
+<title>Paper Trading Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:14px}
+.wrap{max-width:1100px;margin:auto}h1{margin:4px 0;font-size:24px}.sub{color:#94a3b8;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+.card{background:#1e293b;border-radius:12px;padding:14px}.card .l{color:#94a3b8;font-size:13px}.card .v{font-size:28px;font-weight:700;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.panel{background:#1e293b;border-radius:12px;padding:14px;margin-bottom:12px}.panel h2{font-size:17px;margin:0 0 10px}
+.g{color:#22c55e}.r{color:#ef4444}table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:7px 6px;border-bottom:1px solid #334155;text-align:left;vertical-align:top}th{color:#94a3b8}
+.buy{background:rgba(34,197,94,.12)}.sell{background:rgba(239,68,68,.12)}.badge{font-weight:700;padding:2px 8px;border-radius:6px}
+.buy .badge{background:#16a34a;color:#fff}.sell .badge{background:#dc2626;color:#fff}.why{color:#94a3b8;font-size:12px}
+</style></head><body><div class=wrap>
+<h1>📈 Paper Trading Dashboard <span class=sub>(pretend $500 · Oct 12–19, 2026)</span></h1>
+<div class=sub id=upd>Loading…</div>
+<div class=cards>
+<div class=card><div class=l>Total value</div><div class=v id=tv>–</div></div>
+<div class=card><div class=l>Gain vs $500</div><div class=v id=gain>–</div></div>
+<div class=card><div class=l>Cash</div><div class=v id=cash>–</div></div>
+<div class=card><div class=l>Invested (cost)</div><div class=v id=inv>–</div></div>
+<div class=card><div class=l>Open positions / trades</div><div class=v id=cnt>–</div></div></div>
+<div class=panel><h2>Account value over time</h2><div style="height:300px"><canvas id=line></canvas></div></div>
+<div class=grid>
+<div class=panel><h2>Allocation</h2><div style="height:260px"><canvas id=alloc></canvas></div></div>
+<div class=panel><h2>P&amp;L by position / trade ($)</h2><div style="height:260px"><canvas id=pnl></canvas></div><div class=why id=pnlnote></div></div></div>
+<div class=panel><h2>Risk map: stop ← entry → target (% from entry)</h2><div style="height:220px"><canvas id=risk></canvas></div></div>
+<div class=panel><h2>Holdings</h2><table id=hold></table></div>
+<div class=panel><h2>Recent trades</h2><table id=trades></table></div>
+<div class=sub>Auto-refreshes every 5 minutes. Data: ledger.md + values.csv written by the Stock Bots.</div>
+</div><script>
+const C=['#3b82f6','#f59e0b','#a855f7','#06b6d4','#ec4899','#84cc16','#f97316','#14b8a6'];
+const $=id=>document.getElementById(id),f=n=>'$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+let charts={};function mk(id,cfg){charts[id]&&charts[id].destroy();charts[id]=new Chart($(id),cfg)}
+Chart.defaults.color='#cbd5e1';Chart.defaults.borderColor='#334155';Chart.defaults.font.size=13;
+function table(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)'));if(!m)return[];
+ const L=m[1].split('\n').filter(l=>l.trim().startsWith('|'));if(L.length<2)return[];const sp=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(s=>s.trim());
+ const h=sp(L[0]).map(s=>s.toLowerCase());return L.slice(2).map(l=>{const c=sp(l),o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
+const num=x=>parseFloat(String(x||'').replace(/[$,]/g,''));
+async function load(){
+ const b='?t='+Date.now();const[md,csv]=await Promise.all([fetch('ledger.md'+b).then(r=>r.text()),fetch('values.csv'+b).then(r=>r.text())]);
+ const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',')).filter(r=>r.length>=3).map(r=>({t:r[0],v:+r[1],c:+r[2]}));
+ const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings'),tr=table(md,'Trades log');
+ const d=last.v-500,cls=d>=0?'g':'r';
+ $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
+ $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+num(h.cost_basis),0);$('inv').textContent=f(inv);
+ $('cnt').textContent=hold.length+' / '+tr.length;$('upd').textContent='Last ledger snapshot: '+new Date(last.t).toLocaleString()+' · page checked '+new Date().toLocaleTimeString();
+ const lc=d>=0?'#22c55e':'#ef4444';
+ mk('line',{type:'line',data:{labels:rows.map(r=>new Date(r.t).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'})),datasets:[
+  {label:'Account value',data:rows.map(r=>r.v),borderColor:lc,backgroundColor:lc+'33',fill:{target:{value:500}},tension:.25,pointRadius:rows.length<40?4:0,borderWidth:3},
+  {label:'Cash',data:rows.map(r=>r.c),borderColor:'#60a5fa',borderDash:[4,4],pointRadius:0,borderWidth:2},
+  {label:'$500 start',data:rows.map(()=>500),borderColor:'#94a3b8',borderDash:[8,6],pointRadius:0,borderWidth:1.5}]},
+  options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{y:{ticks:{callback:v=>'$'+v}}}}});
+ const al=hold.map(h=>({k:h.ticker,v:num(h.market_value||h.value)||num(h.cost_basis)}));al.push({k:'Cash',v:last.c});
+ mk('alloc',{type:'bar',data:{labels:al.map(a=>a.k),datasets:[{label:'$',data:al.map(a=>a.v),backgroundColor:al.map((a,i)=>a.k=='Cash'?'#64748b':C[i%C.length])}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>f(c.raw)+' ('+(c.raw/last.v*100).toFixed(1)+'%)'}}}}});
+ // P&L: realized from SELLs (vs avg cost of prior buys) + unrealized if ledger provides a price column
+ const pos={},pl=[];tr.forEach(t=>{const q=num(t.qty),p=num(t.price),k=t.ticker,a=(t.action||'').toUpperCase();pos[k]=pos[k]||{q:0,c:0};
+  if(a.startsWith('BUY')){pos[k].q+=q;pos[k].c+=q*p}else if(a.startsWith('SELL')&&pos[k].q>0){const avg=pos[k].c/pos[k].q;pl.push({k:k+' (closed '+t.time_utc.slice(5,16).replace('T',' ')+')',v:(p-avg)*q});pos[k].c-=avg*q;pos[k].q-=q}});
+ let haveU=false;hold.forEach(h=>{const px=num(h.last||h.price||h.current_price);if(!isNaN(px)){haveU=true;pl.push({k:h.ticker+' (open)',v:(px-num(h.avg_cost))*num(h.qty)})}});
+ if(!haveU&&hold.length){const open=last.v-last.c-inv;pl.push({k:'All open positions',v:open})}
+ mk('pnl',{type:'bar',data:{labels:pl.map(p=>p.k),datasets:[{label:'P&L $',data:pl.map(p=>+p.v.toFixed(2)),backgroundColor:pl.map(p=>p.v>=0?'#22c55e':'#ef4444')}]},
+  options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v}}}}});
+ $('pnlnote').textContent=haveU?'':'Ledger has no live prices per holding, so open P&L is shown combined (total value − cash − cost basis).';
+ const rk=hold.filter(h=>h.stop&&h.target);
+ mk('risk',{type:'bar',data:{labels:rk.map(h=>h.ticker),datasets:[
+  {label:'Downside to stop',data:rk.map(h=>[+((num(h.stop)/num(h.avg_cost)-1)*100).toFixed(2),0]),backgroundColor:'#ef4444aa'},
+  {label:'Upside to target',data:rk.map(h=>[0,+((num(h.target)/num(h.avg_cost)-1)*100).toFixed(2)]),backgroundColor:'#22c55eaa'}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>v+'%'}},y:{stacked:true}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.raw[0]||c.raw[1])+'%'}}}}});
+ $('hold').innerHTML='<tr><th>Ticker</th><th>Qty</th><th>Avg cost</th><th>Cost basis</th><th class=r>Stop</th><th class=g>Target</th></tr>'+
+  hold.map(h=>`<tr><td><b>${h.ticker}</b></td><td>${h.qty}</td><td>$${h.avg_cost}</td><td>$${h.cost_basis}</td><td class=r>$${h.stop}</td><td class=g>$${h.target}</td></tr>`).join('');
+ $('trades').innerHTML='<tr><th>Time</th><th>Action</th><th>Ticker</th><th>Qty</th><th>Price</th><th>Total</th></tr>'+
+  tr.slice().reverse().slice(0,25).map(t=>{const s=(t.action||'').toUpperCase().startsWith('SELL')?'sell':'buy';
+  return `<tr class=${s}><td>${new Date(t.time_utc).toLocaleString([], {weekday:'short',hour:'2-digit',minute:'2-digit'})}</td><td><span class=badge>${t.action}</span></td><td><b>${t.ticker}</b></td><td>${t.qty}</td><td>$${t.price}</td><td>$${t.total}</td></tr><tr class=${s}><td colspan=6 class=why>${t.reason||''}</td></tr>`}).join('');
+}
+load().catch(e=>$('upd').textContent='Error loading data: '+e);setInterval(()=>load().catch(()=>{}),300000);
+</script></body></html>
