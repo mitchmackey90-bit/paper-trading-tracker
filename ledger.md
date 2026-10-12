@@ -2,14 +2,13 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $98.62
+- Cash: $196.95
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
 | FRO | 2.6923 | 59.429 | 160.00 | 57.90 | 62.50 |
 | DHT | 5.3131 | 26.35 | 140.00 | 25.40 | 27.80 |
-| ASTS | 1.8765 | 53.29 | 100.00 | 52.40 | 56.50 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -19,6 +18,7 @@
 | 2026-10-12T13:55:49Z | BUY | ASTS | 1.8765 | 53.29 | 100.00 | +4.4% gainer, heavy volume (~7M shares in 25 min). Pulled back from HOD 54.67, holding above day low 52.81 — smaller size since momentum fading. Stop 52.40, target 56.50. Price: Yahoo Finance 13:55 UTC. |
 | 2026-10-12T14:04:53Z | BUY | MDT | 0.8621 | 92.795 | 80.00 | +4.9% large-cap gainer (prev 88.48) on news its MiniMed exchange offer was oversubscribed; orderly grind to new HOD 92.78 with higher lows since 13:35. Catalyst-backed, lower volatility than the tankers. Stop 91.20 (under 91.25 consolidation), target 95.50. Price: Yahoo Finance 14:04 UTC. |
 | 2026-10-12T14:35:22Z | SELL | MDT | 0.8621 | 91.2 | 78.62 | Bot1 stop-out: MDT pierced 91.20 stop (1m lows to 90.885, day LOD 90.71 after last check left it at 91.23). Fill at stop. PnL vs $80 cost ≈ -$1.38. Price: Yahoo Finance 2026-10-12T14:35:22Z. |
+| 2026-10-12T18:14:41Z | SELL | ASTS | 1.8765 | 52.40 | 98.33 | Jr stop-out: ASTS pierced 52.40 stop on the 18:10 1m bar (low 52.22 on 129k, heaviest bar in the hour), new LOD 52.05 at 18:13; last 52.175. Fill at stop per team convention. PnL vs $100 cost ≈ -$1.67. Price: Yahoo Finance chart API 2026-10-12T18:14:41Z. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -95,3 +95,4 @@
 - 2026-10-12T18:07:39Z — total $491.55, cash $98.62 (Bot4 mark, no trade; FRO 58.50, DHT 25.73, ASTS 52.61 marked; no stops/targets hit — ASTS new LOD 52.47 at 18:04, stop 52.40 only ~0.4% from last, 0.07 under LOD; tankers drifting near afternoon lows)
 - 2026-10-12T18:09:30Z — total $492.07, cash $98.62 (Bot2 mark, no trade; FRO 58.59, DHT 25.80, ASTS 52.56 marked; no stops/targets hit — ASTS held 52.47 LOD, stop 52.40 ~0.3% away; tankers ticking up off 18:05 lows)
 - 2026-10-12T18:10:02Z — total $492.58, cash $98.62 (Stock Bot mark, no trade; FRO 58.725, DHT 25.86, ASTS 52.471 marked; no stops/targets hit — ASTS tagged new LOD 52.47 at 18:04 and is back there, 0.07 above 52.40 stop; tankers bounced off 18:05 lows)
+- 2026-10-12T18:14:41Z — total $492.65, cash $196.95 (Jr stopped out ASTS @ 52.40; FRO 58.76, DHT 25.88 marked; no other stops/targets)
