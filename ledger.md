@@ -98,3 +98,4 @@
 - 2026-10-12T18:14:41Z — total $492.65, cash $196.95 (Jr stopped out ASTS @ 52.40; FRO 58.76, DHT 25.88 marked; no other stops/targets)
 - 2026-10-12T18:18:21Z — total $493.01, cash $196.95 (Bot1 mark, no trade; FRO 58.815, DHT 25.92 marked; no stops/targets hit — tankers firming off afternoon lows after ASTS stop-out)
 - 2026-10-12T18:19:50Z — total $492.76, cash $196.95 (Bot4 mark, no trade; FRO 58.75, DHT 25.905 marked; no stops/targets hit — tankers stalled under lunch coil, slipped off 18:16 pop)
+- 2026-10-12T18:22:08Z — total $493.64, cash $196.95 (Bot2 mark, 1:22 PM CT, no trade; FRO 58.84, DHT 26.025 marked; no stops/targets hit — DHT poked back above the ~26.0 lunch coil on an 80k bar at 18:21, FRO still capped under ~58.9)
