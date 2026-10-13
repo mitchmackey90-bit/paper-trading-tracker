@@ -8,7 +8,7 @@
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
 | FRO | 2.6923 | 59.429 | 160.00 | 57.90 | 62.50 |
-| DHT | 5.3131 | 26.35 | 140.00 | 25.40 | 27.80 |
+| DHT | 5.3131 | 26.35 | 140.00 | 25.95 | 27.80 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -173,3 +173,4 @@
 - 2026-10-12T21:01:53Z — total $495.62, cash $196.95 (Stock Bot post-close study mark, 4:01 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close (re-verified), unchanged from prior marks; AH FRO 59.40 / DHT 26.45 noted, not used; no stops/targets hit (day lows 58.00 / 25.50 vs stops 57.90 / 25.40); scanner 0 new / 7258 total; holding overnight)
 - 2026-10-12T21:06:45Z — total $495.62, cash $196.95 (Bot4 post-close mark, 4:06 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
 - 2026-10-12T21:09:51Z — total $495.62, cash $196.95 (Jr post-close mark, 4:09 PM CT, no trade — market closed; FRO 59.19, DHT 26.22 at Yahoo regularMarketPrice official close, unchanged from prior marks; no stops/targets hit; holding overnight with stops 57.90 / 25.40)
+- 2026-10-13T14:05:12Z — total $498.35, cash $196.95 (Stock Bot mark, 9:04 AM CT, no trade; FRO 59.395, DHT 26.63; no stops/targets hit (lows 58.41 / 26.00); DHT above 26.35 entry so stop raised 25.40→25.95 under LOD; FRO just under 59.43 entry, stop stays 57.90; no n≥30 setup with real edge, cash held)
