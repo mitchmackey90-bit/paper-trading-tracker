@@ -54,6 +54,7 @@ const C=['#3b82f6','#f59e0b','#a855f7','#06b6d4','#ec4899','#84cc16','#f97316','
 const $=id=>document.getElementById(id),f=n=>'$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
 let charts={};function mk(id,cfg){charts[id]&&charts[id].destroy();charts[id]=new Chart($(id),cfg)}
 Chart.defaults.color='#cbd5e1';Chart.defaults.borderColor='#334155';Chart.defaults.font.size=12;
+
 const TZ='America/Chicago';
 function fmtCT(iso,opts){return new Date(iso).toLocaleString('en-US',Object.assign({timeZone:TZ},opts))}
 function dayTime(iso){return fmtCT(iso,{weekday:'short',hour:'numeric',minute:'2-digit'})}
@@ -97,17 +98,49 @@ async function load(){
  $('upd').textContent='Last ledger snapshot: '+fmtCT(last.t,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT · '+rows.length+' points · page checked '+fmtCT(new Date().toISOString(),{hour:'numeric',minute:'2-digit'})+' CT';
  const lc=d>=0?'#22c55e':'#ef4444';
  const labels=rows.map(r=>shortDayTime(r.t));
- const vals=rows.map(r=>r.v);
+ const vals=rows.map(r=>Number(r.v));
  let ymin=Math.min(...vals), ymax=Math.max(...vals);
  if(!isFinite(ymin)){ymin=498;ymax=502}
  ymin=ymin-2; ymax=ymax+2;
  if(ymin<0) ymin=0;
- const lineDs=[{label:'Account value',data:vals,borderColor:lc,backgroundColor:lc+'33',fill:true,tension:.25,pointRadius:rows.length<40?3:0,pointHoverRadius:4,borderWidth:3}];
- if(500>=ymin && 500<=ymax){lineDs.push({label:'$500 start',data:rows.map(()=>500),borderColor:'#94a3b8',borderDash:[8,6],pointRadius:0,borderWidth:1.5,fill:false})}
+ const showBase=500>=ymin && 500<=ymax;
+ const lineDs=[{
+    label:'Account value',
+    data:vals,
+    yAxisID:'y',
+    borderColor:lc,
+    backgroundColor:lc,
+    fill:false,
+    tension:.25,
+    pointRadius:0,
+    pointHoverRadius:4,
+    borderWidth:3
+  }];
+ if(showBase){
+   lineDs.push({
+     label:'$500 start',
+     data:vals.map(()=>500),
+     yAxisID:'y',
+     borderColor:'#94a3b8',
+     borderDash:[6,4],
+     pointRadius:0,
+     borderWidth:1.5,
+     fill:false
+   });
+ }
+ if(vals.length){
+   const tip=vals.map(()=>null); tip[vals.length-1]=vals[vals.length-1];
+   lineDs.push({label:'_tip',data:tip,yAxisID:'y',borderColor:lc,backgroundColor:lc,pointRadius:4,pointHoverRadius:5,showLine:false,fill:false});
+ }
  mk('line',{type:'line',data:{labels:labels,datasets:lineDs},
-  options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   animation:false,
+   animations:false,
+   interaction:{mode:'index',intersect:false},
    layout:{padding:{left:0,right:6,top:4,bottom:2}},
-   plugins:{legend:{display:lineDs.length>1,labels:{boxWidth:12,padding:8}}},
+   plugins:{legend:{display:showBase,labels:{boxWidth:12,padding:8,filter:i=>i.text!=='_tip'}}},
    scales:{
     x:{
       type:'category',
@@ -126,10 +159,13 @@ async function load(){
       grid:{display:false}
     },
     y:{
+      type:'linear',
+      position:'left',
       min:ymin,
       max:ymax,
-      ticks:{callback:v=>'$'+Number(v).toFixed(0),font:{size:11},maxTicksLimit:5},
-      beginAtZero:false
+      beginAtZero:false,
+      stacked:false,
+      ticks:{callback:v=>'$'+Number(v).toFixed(0),font:{size:11},maxTicksLimit:5}
     }
    }}});
  const al=hold.map(h=>({k:h.ticker,v:num(h.market_value||h.value)||num(h.cost_basis)}));al.push({k:'Cash',v:last.c});

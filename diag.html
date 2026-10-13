@@ -1,0 +1,206 @@
+<!doctype html><html><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Paper Trading Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
+body{font-family:system-ui,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:14px}
+.wrap{max-width:1100px;margin:auto;width:100%}
+h1{margin:4px 0;font-size:22px;word-wrap:break-word}
+.sub{color:#94a3b8;font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:14px 0}
+.card{background:#1e293b;border-radius:12px;padding:14px}
+.card .l{color:#94a3b8;font-size:13px}
+.card .v{font-size:26px;font-weight:700;margin-top:4px;word-break:break-word}
+.grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+.panel{background:#1e293b;border-radius:12px;padding:14px;margin-bottom:12px;overflow:hidden;max-width:100%}
+.panel h2{font-size:17px;margin:0 0 10px}
+.chart-box{position:relative;width:100%;max-width:100%;height:280px}
+.chart-box.sm{height:240px}
+.chart-box.xs{height:200px}
+.g{color:#22c55e}.r{color:#ef4444}
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:0}
+th,td{padding:7px 6px;border-bottom:1px solid #334155;text-align:left;vertical-align:top;word-break:break-word}
+th{color:#94a3b8}
+.buy{background:rgba(34,197,94,.12)}.sell{background:rgba(239,68,68,.12)}
+.badge{font-weight:700;padding:2px 8px;border-radius:6px;display:inline-block}
+.buy .badge{background:#16a34a;color:#fff}.sell .badge{background:#dc2626;color:#fff}
+.why{color:#94a3b8;font-size:12px}
+</style></head><body><div class=wrap>
+<h1>📈 Paper Trading Dashboard <span class=sub>(pretend $500 · Oct 12–Nov 12, 2026)</span></h1>
+<div class=sub id=upd>Loading…</div>
+<div class=cards>
+<div class=card><div class=l>Total value</div><div class=v id=tv>–</div></div>
+<div class=card><div class=l>Gain vs $500</div><div class=v id=gain>–</div></div>
+<div class=card><div class=l>Cash</div><div class=v id=cash>–</div></div>
+<div class=card><div class=l>Invested (cost)</div><div class=v id=inv>–</div></div>
+<div class=card><div class=l>Open positions / trades</div><div class=v id=cnt>–</div></div></div>
+<div class=panel><h2>Account value over time</h2><div class=chart-box><canvas id=line></canvas></div></div>
+<div class=grid>
+<div class=panel><h2>Allocation</h2><div class="chart-box sm"><canvas id=alloc></canvas></div></div>
+<div class=panel><h2>P&amp;L by position / trade ($)</h2><div class="chart-box sm"><canvas id=pnl></canvas></div><div class=why id=pnlnote></div></div></div>
+<div class=panel><h2>Risk map: stop ← entry → target (% from entry)</h2><div class="chart-box xs"><canvas id=risk></canvas></div></div>
+<div class=panel><h2>Holdings</h2><div class=table-wrap><table id=hold></table></div></div>
+<div class=panel><h2>Recent trades</h2><div class=table-wrap><table id=trades></table></div></div>
+<div class=sub>Auto-refreshes every 5 minutes. Data: ledger.md + values.csv written by Stock Bot.</div>
+</div><script>
+const C=['#3b82f6','#f59e0b','#a855f7','#06b6d4','#ec4899','#84cc16','#f97316','#14b8a6'];
+const $=id=>document.getElementById(id),f=n=>'$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+let charts={};function mk(id,cfg){charts[id]&&charts[id].destroy();charts[id]=new Chart($(id),cfg)}
+Chart.defaults.color='#cbd5e1';Chart.defaults.borderColor='#334155';Chart.defaults.font.size=12;
+
+const TZ='America/Chicago';
+function fmtCT(iso,opts){return new Date(iso).toLocaleString('en-US',Object.assign({timeZone:TZ},opts))}
+function dayTime(iso){return fmtCT(iso,{weekday:'short',hour:'numeric',minute:'2-digit'})}
+function shortDayTime(iso){
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'short',hour:'numeric',hour12:true}).formatToParts(new Date(iso));
+  const wd=parts.find(p=>p.type==='weekday').value;
+  const hour=parts.find(p=>p.type==='hour').value;
+  const ap=(parts.find(p=>p.type==='dayPeriod')||{value:'a'}).value.charAt(0).toLowerCase();
+  return wd+' '+hour+ap;
+}
+function table(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)'));if(!m)return[];
+ const L=m[1].split('\n').filter(l=>l.trim().startsWith('|'));if(L.length<2)return[];const sp=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(s=>s.trim());
+ const h=sp(L[0]).map(s=>s.toLowerCase());return L.slice(2).map(l=>{const c=sp(l),o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
+const num=x=>parseFloat(String(x||'').replace(/[$,]/g,''));
+function parseValuesCsv(csv){
+  return csv.trim().split(/\r?\n/).slice(1).map(l=>l.split(',')).filter(r=>r.length>=3&&r[0]&&!isNaN(+r[1])&&!isNaN(+r[2]))
+    .map(r=>({t:r[0].trim(),v:+r[1],c:+r[2]}))
+    .filter(r=>!isNaN(Date.parse(r.t)))
+    .sort((a,b)=>Date.parse(a.t)-Date.parse(b.t));
+}
+function tickIndexes(n,maxTicks){
+  if(n<=0)return[];
+  if(n<=maxTicks)return[...Array(n).keys()];
+  const want=new Set([0,n-1]);
+  for(let i=1;i<=maxTicks-2;i++) want.add(Math.round(i*(n-1)/(maxTicks-1)));
+  return [...want].sort((a,b)=>a-b);
+}
+async function load(){
+ const bust='?t='+Date.now();
+ const opts={cache:'no-store'};
+ const[md,csv]=await Promise.all([
+  fetch('ledger.md'+bust,opts).then(r=>r.text()),
+  fetch('values.csv'+bust,opts).then(r=>r.text())
+ ]);
+ const rows=parseValuesCsv(csv);
+ const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings'),tr=table(md,'Trades log');
+ const d=last.v-500,cls=d>=0?'g':'r';
+ $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
+ $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+num(h.cost_basis),0);$('inv').textContent=f(inv);
+ $('cnt').textContent=hold.length+' / '+tr.length;
+ $('upd').textContent='Last ledger snapshot: '+fmtCT(last.t,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT · '+rows.length+' points · page checked '+fmtCT(new Date().toISOString(),{hour:'numeric',minute:'2-digit'})+' CT';
+ const lc=d>=0?'#22c55e':'#ef4444';
+ const labels=rows.map(r=>shortDayTime(r.t));
+ const vals=rows.map(r=>Number(r.v));
+ let ymin=Math.min(...vals), ymax=Math.max(...vals);
+ if(!isFinite(ymin)){ymin=498;ymax=502}
+ ymin=ymin-2; ymax=ymax+2;
+ if(ymin<0) ymin=0;
+ const showBase=500>=ymin && 500<=ymax;
+ const lineDs=[{
+    label:'Account value',
+    data:vals,
+    yAxisID:'y',
+    borderColor:lc,
+    backgroundColor:lc,
+    fill:false,
+    tension:.25,
+    pointRadius:0,
+    pointHoverRadius:4,
+    borderWidth:3
+  }];
+ if(showBase){
+   lineDs.push({
+     label:'$500 start',
+     data:vals.map(()=>500),
+     yAxisID:'y',
+     borderColor:'#94a3b8',
+     borderDash:[6,4],
+     pointRadius:0,
+     borderWidth:1.5,
+     fill:false
+   });
+ }
+ if(vals.length){
+   const tip=vals.map(()=>null); tip[vals.length-1]=vals[vals.length-1];
+   lineDs.push({label:'_tip',data:tip,yAxisID:'y',borderColor:lc,backgroundColor:lc,pointRadius:4,pointHoverRadius:5,showLine:false,fill:false});
+ }
+ mk('line',{type:'line',data:{labels:labels,datasets:lineDs},
+  options:{
+   responsive:true,
+   maintainAspectRatio:false,
+   animation:false,
+   animations:false,
+   interaction:{mode:'index',intersect:false},
+   layout:{padding:{left:0,right:6,top:4,bottom:2}},
+   plugins:{legend:{display:showBase,labels:{boxWidth:12,padding:8,filter:i=>i.text!=='_tip'}}},
+   scales:{
+    x:{
+      type:'category',
+      offset:false,
+      afterBuildTicks(axis){
+        const n=axis.chart.data.labels.length;
+        axis.ticks=tickIndexes(n,4).map(i=>({value:i}));
+      },
+      ticks:{
+        autoSkip:true,
+        maxTicksLimit:4,
+        maxRotation:0,
+        minRotation:0,
+        font:{size:11}
+      },
+      grid:{display:false}
+    },
+    y:{
+      type:'linear',
+      position:'left',
+      min:ymin,
+      max:ymax,
+      beginAtZero:false,
+      stacked:false,
+      ticks:{callback:v=>'$'+Number(v).toFixed(0),font:{size:11},maxTicksLimit:5}
+    }
+   }}});
+ try{
+  const c=charts.line,y=c.scales.y;
+  const map={}; for(const v of [y.min,491.55,495,497.53,500,y.max]) map[String(v)]=y.getPixelForValue(v);
+  const last=c.getDatasetMeta(0).data.at(-1);
+  const baseDs=c.data.datasets.findIndex(d=>d.label==='$500 start');
+  const base=baseDs>=0?c.getDatasetMeta(baseDs).data[0]:null;
+  const out={y:[y.min,y.max],pixelFor:map,
+   last:{x:last.x,y:last.y,v:c.data.datasets[0].data.at(-1),parsed:last.parsed},
+   base:base?{x:base.x,y:base.y,v:500,parsed:base.parsed}:null,
+   labels:c.data.datasets.map(d=>d.label)};
+  let pre=document.getElementById('diag'); if(!pre){pre=document.createElement('pre');pre.id='diag';pre.style.display='none';document.body.appendChild(pre)}
+  pre.textContent=JSON.stringify(out);
+ }catch(e){let pre=document.getElementById('diag'); if(!pre){pre=document.createElement('pre');pre.id='diag';document.body.appendChild(pre)} pre.textContent=JSON.stringify({err:String(e)})}
+  const al=hold.map(h=>({k:h.ticker,v:num(h.market_value||h.value)||num(h.cost_basis)}));al.push({k:'Cash',v:last.c});
+ mk('alloc',{type:'bar',data:{labels:al.map(a=>a.k),datasets:[{label:'$',data:al.map(a=>a.v),backgroundColor:al.map((a,i)=>a.k=='Cash'?'#64748b':C[i%C.length])}]},
+  options:{responsive:true,indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>f(c.raw)+' ('+(c.raw/last.v*100).toFixed(1)+'%)'}}}}});
+ const pos={},pl=[];tr.forEach(t=>{const q=num(t.qty),p=num(t.price),k=t.ticker,a=(t.action||'').toUpperCase();pos[k]=pos[k]||{q:0,c:0};
+  if(a.startsWith('BUY')){pos[k].q+=q;pos[k].c+=q*p}else if(a.startsWith('SELL')&&pos[k].q>0){const avg=pos[k].c/pos[k].q;pl.push({k:k+' (closed '+t.time_utc.slice(5,16).replace('T',' ')+')',v:(p-avg)*q});pos[k].c-=avg*q;pos[k].q-=q}});
+ let haveU=false;hold.forEach(h=>{const px=num(h.last||h.price||h.current_price);if(!isNaN(px)){haveU=true;pl.push({k:h.ticker+' (open)',v:(px-num(h.avg_cost))*num(h.qty)})}});
+ if(!haveU&&hold.length){const open=last.v-last.c-inv;pl.push({k:'All open positions',v:open})}
+ mk('pnl',{type:'bar',data:{labels:pl.map(p=>p.k),datasets:[{label:'P&L $',data:pl.map(p=>+p.v.toFixed(2)),backgroundColor:pl.map(p=>p.v>=0?'#22c55e':'#ef4444')}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v}}}}});
+ $('pnlnote').textContent=haveU?'':'Ledger has no live prices per holding, so open P&L is shown combined (total value − cash − cost basis).';
+ const rk=hold.filter(h=>h.stop&&h.target);
+ mk('risk',{type:'bar',data:{labels:rk.map(h=>h.ticker),datasets:[
+  {label:'Downside to stop',data:rk.map(h=>[+((num(h.stop)/num(h.avg_cost)-1)*100).toFixed(2),0]),backgroundColor:'#ef4444aa'},
+  {label:'Upside to target',data:rk.map(h=>[0,+((num(h.target)/num(h.avg_cost)-1)*100).toFixed(2)]),backgroundColor:'#22c55eaa'}]},
+  options:{responsive:true,indexAxis:'y',maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>v+'%'}},y:{stacked:true}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.raw[0]||c.raw[1])+'%'}}}}});
+ $('hold').innerHTML='<tr><th>Ticker</th><th>Qty</th><th>Avg cost</th><th>Cost basis</th><th class=r>Stop</th><th class=g>Target</th></tr>'+
+  hold.map(h=>`<tr><td><b>${h.ticker}</b></td><td>${h.qty}</td><td>$${h.avg_cost}</td><td>$${h.cost_basis}</td><td class=r>$${h.stop}</td><td class=g>$${h.target}</td></tr>`).join('');
+ $('trades').innerHTML='<tr><th>Time</th><th>Action</th><th>Ticker</th><th>Qty</th><th>Price</th><th>Total</th></tr>'+
+  tr.slice().reverse().slice(0,25).map(t=>{const s=(t.action||'').toUpperCase().startsWith('SELL')?'sell':'buy';
+  return `<tr class=${s}><td>${dayTime(t.time_utc)}</td><td><span class=badge>${t.action}</span></td><td><b>${t.ticker}</b></td><td>${t.qty}</td><td>$${t.price}</td><td>$${t.total}</td></tr><tr class=${s}><td colspan=6 class=why>${t.reason||''}</td></tr>`}).join('');
+}
+load().catch(e=>$('upd').textContent='Error loading data: '+e);setInterval(()=>load().catch(()=>{}),300000);
+</script></body></html>
