@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<!doctype html><html><head><meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Paper Trading Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
@@ -52,29 +56,63 @@ let charts={};function mk(id,cfg){charts[id]&&charts[id].destroy();charts[id]=ne
 Chart.defaults.color='#cbd5e1';Chart.defaults.borderColor='#334155';Chart.defaults.font.size=12;
 const TZ='America/Chicago';
 function fmtCT(iso,opts){return new Date(iso).toLocaleString('en-US',Object.assign({timeZone:TZ},opts))}
+function dayTime(iso){return fmtCT(iso,{weekday:'short',hour:'numeric',minute:'2-digit'})}
 function table(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)'));if(!m)return[];
  const L=m[1].split('\n').filter(l=>l.trim().startsWith('|'));if(L.length<2)return[];const sp=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(s=>s.trim());
  const h=sp(L[0]).map(s=>s.toLowerCase());return L.slice(2).map(l=>{const c=sp(l),o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
 const num=x=>parseFloat(String(x||'').replace(/[$,]/g,''));
+function parseValuesCsv(csv){
+  return csv.trim().split(/\r?\n/).slice(1).map(l=>l.split(',')).filter(r=>r.length>=3&&r[0]&&!isNaN(+r[1])&&!isNaN(+r[2]))
+    .map(r=>({t:r[0].trim(),v:+r[1],c:+r[2]}))
+    .filter(r=>!isNaN(Date.parse(r.t)))
+    .sort((a,b)=>Date.parse(a.t)-Date.parse(b.t));
+}
+function tickIndexes(n,maxTicks){
+  if(n<=0)return[];
+  if(n<=maxTicks)return[...Array(n).keys()];
+  const want=new Set([0,n-1]);
+  for(let i=1;i<=maxTicks-2;i++) want.add(Math.round(i*(n-1)/(maxTicks-1)));
+  return [...want].sort((a,b)=>a-b);
+}
 async function load(){
- const b='?t='+Date.now();const[md,csv]=await Promise.all([fetch('ledger.md'+b).then(r=>r.text()),fetch('values.csv'+b).then(r=>r.text())]);
- const rows=csv.trim().split('\n').slice(1).map(l=>l.split(',')).filter(r=>r.length>=3).map(r=>({t:r[0],v:+r[1],c:+r[2]}));
+ const bust='?t='+Date.now();
+ const opts={cache:'no-store'};
+ const[md,csv]=await Promise.all([
+  fetch('ledger.md'+bust,opts).then(r=>r.text()),
+  fetch('values.csv'+bust,opts).then(r=>r.text())
+ ]);
+ const rows=parseValuesCsv(csv);
  const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings'),tr=table(md,'Trades log');
  const d=last.v-500,cls=d>=0?'g':'r';
  $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
  $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+num(h.cost_basis),0);$('inv').textContent=f(inv);
- $('cnt').textContent=hold.length+' / '+tr.length;$('upd').textContent='Last ledger snapshot: '+fmtCT(last.t,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT · page checked '+fmtCT(new Date().toISOString(),{hour:'numeric',minute:'2-digit'})+' CT';
+ $('cnt').textContent=hold.length+' / '+tr.length;
+ $('upd').textContent='Last ledger snapshot: '+fmtCT(last.t,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT · '+rows.length+' points · page checked '+fmtCT(new Date().toISOString(),{hour:'numeric',minute:'2-digit'})+' CT';
  const lc=d>=0?'#22c55e':'#ef4444';
- const labels=rows.map(r=>fmtCT(r.t,{weekday:'short',hour:'numeric',minute:'2-digit'}));
+ const labels=rows.map(r=>dayTime(r.t));
+ const show=new Set(tickIndexes(labels.length,6));
+ const lastPt=rows.length?Array(rows.length).fill(null):[];
+ if(rows.length) lastPt[rows.length-1]=rows[rows.length-1].v;
  mk('line',{type:'line',data:{labels:labels,datasets:[
-  {label:'Account value',data:rows.map(r=>r.v),borderColor:lc,backgroundColor:lc+'33',fill:{target:{value:500}},tension:.25,pointRadius:rows.length<40?3:0,borderWidth:3},
+  {label:'Account value',data:rows.map(r=>r.v),borderColor:lc,backgroundColor:lc+'33',fill:{target:{value:500}},tension:.25,pointRadius:rows.length<40?3:0,borderWidth:3,spanGaps:false},
+  {label:'_last',data:lastPt,borderColor:lc,backgroundColor:lc,pointRadius:4,pointHoverRadius:5,showLine:false},
   {label:'Cash',data:rows.map(r=>r.c),borderColor:'#60a5fa',borderDash:[4,4],pointRadius:0,borderWidth:2},
   {label:'$500 start',data:rows.map(()=>500),borderColor:'#94a3b8',borderDash:[8,6],pointRadius:0,borderWidth:1.5}]},
   options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-   layout:{padding:{left:0,right:4,top:4,bottom:0}},
-   plugins:{legend:{labels:{boxWidth:12,padding:10}}},
+   layout:{padding:{left:0,right:8,top:4,bottom:0}},
+   plugins:{legend:{labels:{boxWidth:12,padding:10,filter:item=>item.text!=='_last'}}},
    scales:{
-    x:{ticks:{autoSkip:true,maxTicksLimit:6,maxRotation:0,minRotation:0},grid:{display:false}},
+    x:{
+      type:'category',
+      offset:false,
+      ticks:{
+        autoSkip:false,
+        maxRotation:0,
+        minRotation:0,
+        callback:function(val,index){return show.has(index)?this.getLabelForValue(val):''}
+      },
+      grid:{display:false}
+    },
     y:{ticks:{callback:v=>'$'+v},beginAtZero:false}
    }}});
  const al=hold.map(h=>({k:h.ticker,v:num(h.market_value||h.value)||num(h.cost_basis)}));al.push({k:'Cash',v:last.c});
@@ -96,7 +134,7 @@ async function load(){
   hold.map(h=>`<tr><td><b>${h.ticker}</b></td><td>${h.qty}</td><td>$${h.avg_cost}</td><td>$${h.cost_basis}</td><td class=r>$${h.stop}</td><td class=g>$${h.target}</td></tr>`).join('');
  $('trades').innerHTML='<tr><th>Time</th><th>Action</th><th>Ticker</th><th>Qty</th><th>Price</th><th>Total</th></tr>'+
   tr.slice().reverse().slice(0,25).map(t=>{const s=(t.action||'').toUpperCase().startsWith('SELL')?'sell':'buy';
-  return `<tr class=${s}><td>${fmtCT(t.time_utc,{weekday:'short',hour:'numeric',minute:'2-digit'})}</td><td><span class=badge>${t.action}</span></td><td><b>${t.ticker}</b></td><td>${t.qty}</td><td>$${t.price}</td><td>$${t.total}</td></tr><tr class=${s}><td colspan=6 class=why>${t.reason||''}</td></tr>`}).join('');
+  return `<tr class=${s}><td>${dayTime(t.time_utc)}</td><td><span class=badge>${t.action}</span></td><td><b>${t.ticker}</b></td><td>${t.qty}</td><td>$${t.price}</td><td>$${t.total}</td></tr><tr class=${s}><td colspan=6 class=why>${t.reason||''}</td></tr>`}).join('');
 }
 load().catch(e=>$('upd').textContent='Error loading data: '+e);setInterval(()=>load().catch(()=>{}),300000);
 </script></body></html>
