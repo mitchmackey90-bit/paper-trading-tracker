@@ -90,10 +90,10 @@ async function load(){
   fetch('values.csv'+bust,opts).then(r=>r.text())
  ]);
  const rows=parseValuesCsv(csv);
- const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings'),tr=table(md,'Trades log');
+ const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings').filter(h=>{const t=(h.ticker||'').replace(/\*/g,'').trim().toLowerCase();return t&&t!=='none'&&t!=='(none)'&&!isNaN(num(h.qty))&&num(h.qty)>0;}),tr=table(md,'Trades log');
  const d=last.v-500,cls=d>=0?'g':'r';
  $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
- $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+num(h.cost_basis),0);$('inv').textContent=f(inv);
+ $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+(num(h.cost_basis)||0),0);$('inv').textContent=f(inv);
  $('cnt').textContent=hold.length+' / '+tr.length;
  $('upd').textContent='Last ledger snapshot: '+fmtCT(last.t,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})+' CT · '+rows.length+' points · page checked '+fmtCT(new Date().toISOString(),{hour:'numeric',minute:'2-digit'})+' CT';
  const lc=d>=0?'#22c55e':'#ef4444';
