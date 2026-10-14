@@ -2,13 +2,12 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $196.95
+- Cash: $491.92
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| FRO | 2.6923 | 59.429 | 160.00 | 58.35 | 62.50 |
-| DHT | 5.3131 | 26.35 | 140.00 | 25.95 | 27.80 |
+| *(none)* |  |  |  |  |  |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -19,6 +18,8 @@
 | 2026-10-12T14:04:53Z | BUY | MDT | 0.8621 | 92.795 | 80.00 | +4.9% large-cap gainer (prev 88.48) on news its MiniMed exchange offer was oversubscribed; orderly grind to new HOD 92.78 with higher lows since 13:35. Catalyst-backed, lower volatility than the tankers. Stop 91.20 (under 91.25 consolidation), target 95.50. Price: Yahoo Finance 14:04 UTC. |
 | 2026-10-12T14:35:22Z | SELL | MDT | 0.8621 | 91.2 | 78.62 | Bot1 stop-out: MDT pierced 91.20 stop (1m lows to 90.885, day LOD 90.71 after last check left it at 91.23). Fill at stop. PnL vs $80 cost ≈ -$1.38. Price: Yahoo Finance 2026-10-12T14:35:22Z. |
 | 2026-10-12T18:14:41Z | SELL | ASTS | 1.8765 | 52.40 | 98.33 | Jr stop-out: ASTS pierced 52.40 stop on the 18:10 1m bar (low 52.22 on 129k, heaviest bar in the hour), new LOD 52.05 at 18:13; last 52.175. Fill at stop per team convention. PnL vs $100 cost ≈ -$1.67. Price: Yahoo Finance chart API 2026-10-12T18:14:41Z. |
+| 2026-10-14T13:50:15Z | SELL | FRO | 2.6923 | 58.35 | 157.10 | Stop-out: FRO pierced 58.35 (1m low 57.40, last ~57.64). Fill at stop. PnL vs $160 ≈ $-2.90. Yahoo 1m 2026-10-14T13:50:15Z. |
+| 2026-10-14T13:50:15Z | SELL | DHT | 5.3131 | 25.95 | 137.87 | Stop-out: DHT pierced 25.95 (1m low 25.87, last ~25.97). Fill at stop. PnL vs $140 ≈ $-2.13. Yahoo 1m 2026-10-14T13:50:15Z. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -181,3 +182,4 @@
 
 - 2026-10-13T18:59:19Z — total $499.27, cash $196.95 (Stock Bot mark, 1:58 PM CT, no trade; FRO 59.46, DHT 26.77; no stops/targets hit (lows 58.41 / 26.00 vs stops 58.35 / 25.95; highs 59.75 / 26.89 vs targets 62.50 / 27.80); SPY 777.69 soft; no fresh gap/breakout entry, cash held)
 - 2026-10-13T19:54:40Z — total $497.53, cash $196.95 (Stock Bot mark, 2:54 PM CT, no trade; FRO 59.12, DHT 26.615; no stops/targets hit (lows 58.41 / 26.00 vs stops 58.35 / 25.95; highs 59.75 / 26.89 vs targets 62.50 / 27.80); SPY 778.07 flat near close; no fresh gap/breakout entry, cash held)
+- 2026-10-14T13:50:15Z — total $491.92, cash $491.92 (Stock Bot stop-outs FRO@58.35 + DHT@25.95; tanker selloff LOD 57.40/25.87; SPY soft ~776; cash held, no chase of LQDA/BSP mega-gaps)
