@@ -2,12 +2,12 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $491.92
+- Cash: $351.92
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| *(none)* |  |  |  |  |  |
+| AA | 3.2695 | 42.82 | 140.00 | 42.1 | 44.3 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -20,6 +20,7 @@
 | 2026-10-12T18:14:41Z | SELL | ASTS | 1.8765 | 52.40 | 98.33 | Jr stop-out: ASTS pierced 52.40 stop on the 18:10 1m bar (low 52.22 on 129k, heaviest bar in the hour), new LOD 52.05 at 18:13; last 52.175. Fill at stop per team convention. PnL vs $100 cost ≈ -$1.67. Price: Yahoo Finance chart API 2026-10-12T18:14:41Z. |
 | 2026-10-14T13:50:15Z | SELL | FRO | 2.6923 | 58.35 | 157.10 | Stop-out: FRO pierced 58.35 (1m low 57.40, last ~57.64). Fill at stop. PnL vs $160 ≈ $-2.90. Yahoo 1m 2026-10-14T13:50:15Z. |
 | 2026-10-14T13:50:15Z | SELL | DHT | 5.3131 | 25.95 | 137.87 | Stop-out: DHT pierced 25.95 (1m low 25.87, last ~25.97). Fill at stop. PnL vs $140 ≈ $-2.13. Yahoo 1m 2026-10-14T13:50:15Z. |
+| 2026-10-16T13:44:54Z | BUY | AA | 3.2695 | 42.82 | 140.00 | gap_and_go: +6.0% vs prev 40.41, open 41.42; grinding HOD (1m 42.65→42.82, H 42.95) on ~1.4M vol. Materials, not tech — QQQ −0.8% but IWM green. Stop 42.1 (under 13:35 base), target 44.3. Yahoo 1m 2026-10-16T13:44:54Z. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -197,3 +198,4 @@
 - 2026-10-15T17:46:02Z — total $491.92, cash $491.92 (Stock Bot mark, 12:45 PM CT, no trade; flat cash; SPY 771.5 (+0.2%), QQQ 726.3 (−0.4%), IWM 273.8 (+0.9%); morning gap_and_go already extended, midday breakouts AFRM/CRWV/NKE/SMG skipped — breakout_high_vol thin edge, QQQ still soft)
 - 2026-10-15T18:50:27Z — total $491.92, cash $491.92 (Stock Bot mark, 1:50 PM CT, no trade; flat cash; SPY 770.3 (+0.1%), QQQ 724.6 (−0.6%), IWM 273.6 (+0.8%); late breakouts AFRM/SOFI/INTA/WULF and fintech fades into soft QQQ skipped — breakout_high_vol thin edge, hold cash)
 - 2026-10-15T19:48:55Z — total $491.92, cash $491.92 (Stock Bot mark, 2:49 PM CT, no trade; flat cash; late rally SPY 772.4, QQQ 729.1, IWM 275.0 lifting into close; <15m left, no new entry — late volume spikes/fades only, no gap_and_go or proven breakout edge)
+- 2026-10-16T13:44:54Z — total $491.92, cash $351.92 (bought AA 3.2695 @ 42.82; SPY ~771.7 flat, QQQ 722 (−0.8%), IWM 275.7 (+0.3%); skipped faded gap_and_go DHT/ECO/BWLP)
