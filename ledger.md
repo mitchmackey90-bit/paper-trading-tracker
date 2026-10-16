@@ -7,7 +7,7 @@
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| AA | 3.2695 | 42.82 | 140.00 | 43.2 | 44.3 |
+| — | | | | | |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -21,6 +21,7 @@
 | 2026-10-14T13:50:15Z | SELL | FRO | 2.6923 | 58.35 | 157.10 | Stop-out: FRO pierced 58.35 (1m low 57.40, last ~57.64). Fill at stop. PnL vs $160 ≈ $-2.90. Yahoo 1m 2026-10-14T13:50:15Z. |
 | 2026-10-14T13:50:15Z | SELL | DHT | 5.3131 | 25.95 | 137.87 | Stop-out: DHT pierced 25.95 (1m low 25.87, last ~25.97). Fill at stop. PnL vs $140 ≈ $-2.13. Yahoo 1m 2026-10-14T13:50:15Z. |
 | 2026-10-16T13:44:54Z | BUY | AA | 3.2695 | 42.82 | 140.00 | gap_and_go: +6.0% vs prev 40.41, open 41.42; grinding HOD (1m 42.65→42.82, H 42.95) on ~1.4M vol. Materials, not tech — QQQ −0.8% but IWM green. Stop 42.1 (under 13:35 base), target 44.3. Yahoo 1m 2026-10-16T13:44:54Z. |
+| 2026-10-16T15:45:00Z | SELL | AA | 3.2695 | 44.30 | 144.84 | Target hit: 1m high 44.35 at 15:03Z (10:03 AM CT), before trailing stop 43.20 was touched (15:29Z). Fill at target. PnL vs $140 ≈ +$4.84 (+3.5%). Last 43.14. Yahoo 1m. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -200,3 +201,4 @@
 - 2026-10-15T19:48:55Z — total $491.92, cash $491.92 (Stock Bot mark, 2:49 PM CT, no trade; flat cash; late rally SPY 772.4, QQQ 729.1, IWM 275.0 lifting into close; <15m left, no new entry — late volume spikes/fades only, no gap_and_go or proven breakout edge)
 - 2026-10-16T13:44:54Z — total $491.92, cash $351.92 (bought AA 3.2695 @ 42.82; SPY ~771.7 flat, QQQ 722 (−0.8%), IWM 275.7 (+0.3%); skipped faded gap_and_go DHT/ECO/BWLP)
 - 2026-10-16T14:52:00Z — total $495.68, cash $351.92 (Stock Bot mark, 9:52 AM CT, no trade; AA 43.97 (+8.8%), H 44.10 vs target 44.30, low since entry 42.71 > stop 42.10; stop raised 42.10→43.20 to lock gain; SPY 772.4 flat, QQQ 723 (−0.7%), IWM 274.7; late breakouts NVDA/SMH/GLD into soft QQQ skipped)
+- 2026-10-16T15:45:00Z — total $496.76, cash $496.76 (Stock Bot, 10:45 AM CT: AA target 44.30 hit 10:03 AM CT, sold +$4.84; now all cash; SPY 769.0 (−0.5% from open), QQQ 718.5 (−1.0%), IWM 272.9 (−0.9%) risk-off, no new entry)
