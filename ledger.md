@@ -7,7 +7,7 @@
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| AA | 3.2695 | 42.82 | 140.00 | 42.1 | 44.3 |
+| AA | 3.2695 | 42.82 | 140.00 | 43.2 | 44.3 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -199,3 +199,4 @@
 - 2026-10-15T18:50:27Z — total $491.92, cash $491.92 (Stock Bot mark, 1:50 PM CT, no trade; flat cash; SPY 770.3 (+0.1%), QQQ 724.6 (−0.6%), IWM 273.6 (+0.8%); late breakouts AFRM/SOFI/INTA/WULF and fintech fades into soft QQQ skipped — breakout_high_vol thin edge, hold cash)
 - 2026-10-15T19:48:55Z — total $491.92, cash $491.92 (Stock Bot mark, 2:49 PM CT, no trade; flat cash; late rally SPY 772.4, QQQ 729.1, IWM 275.0 lifting into close; <15m left, no new entry — late volume spikes/fades only, no gap_and_go or proven breakout edge)
 - 2026-10-16T13:44:54Z — total $491.92, cash $351.92 (bought AA 3.2695 @ 42.82; SPY ~771.7 flat, QQQ 722 (−0.8%), IWM 275.7 (+0.3%); skipped faded gap_and_go DHT/ECO/BWLP)
+- 2026-10-16T14:52:00Z — total $495.68, cash $351.92 (Stock Bot mark, 9:52 AM CT, no trade; AA 43.97 (+8.8%), H 44.10 vs target 44.30, low since entry 42.71 > stop 42.10; stop raised 42.10→43.20 to lock gain; SPY 772.4 flat, QQQ 723 (−0.7%), IWM 274.7; late breakouts NVDA/SMH/GLD into soft QQQ skipped)
