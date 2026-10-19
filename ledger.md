@@ -209,3 +209,4 @@
 - 2026-10-16T19:42:30Z — total $496.76, cash $496.76 (Stock Bot mark, 2:42 PM CT, no trade; all cash into Friday close; SPY 762.4 (−1.4% from open), QQQ 709.1 (−2.3%), IWM 270.2 (−1.9%) risk-off near lows; late LMT/DNOW/CRGY breakouts skipped — thin edge, <20m left, no weekend hold)
 - 2026-10-19T13:46:00Z — total $496.76, cash $356.76 (bought ASTS 3.2370 @ 43.25 on gap_and_go; SPY 767 (+0.5%), QQQ ~720 (+1.4%), IWM 271 (+0.3%) risk-on open; skipped WDC/APLD/MANE)
 - 2026-10-19T14:48:57Z — total $496.02, cash $356.76 (Stock Bot mark, 9:49 AM CT, no trade; ASTS 43.02, low since entry 42.42 vs stop 42.40, high 43.77 vs target 44.75 — no hit; SPY 767.6 (+0.6%), QQQ 720.7 (+1.5%), IWM 271.3; CLF/IRON/APLD gainers already extended, skipped)
+- 2026-10-19T16:04:18Z — total $497.28, cash $356.76 (mark, no trade; ASTS 43.41 marked; stop 42.40 / target 44.75 intact; post-entry LOD 42.42)
