@@ -2,12 +2,12 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $351.92
+- Cash: $356.76
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| — | | | | | |
+| ASTS | 3.2370 | 43.25 | 140.00 | 42.40 | 44.75 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -22,6 +22,7 @@
 | 2026-10-14T13:50:15Z | SELL | DHT | 5.3131 | 25.95 | 137.87 | Stop-out: DHT pierced 25.95 (1m low 25.87, last ~25.97). Fill at stop. PnL vs $140 ≈ $-2.13. Yahoo 1m 2026-10-14T13:50:15Z. |
 | 2026-10-16T13:44:54Z | BUY | AA | 3.2695 | 42.82 | 140.00 | gap_and_go: +6.0% vs prev 40.41, open 41.42; grinding HOD (1m 42.65→42.82, H 42.95) on ~1.4M vol. Materials, not tech — QQQ −0.8% but IWM green. Stop 42.1 (under 13:35 base), target 44.3. Yahoo 1m 2026-10-16T13:44:54Z. |
 | 2026-10-16T15:45:00Z | SELL | AA | 3.2695 | 44.30 | 144.84 | Target hit: 1m high 44.35 at 15:03Z (10:03 AM CT), before trailing stop 43.20 was touched (15:29Z). Fill at target. PnL vs $140 ≈ +$4.84 (+3.5%). Last 43.14. Yahoo 1m. |
+| 2026-10-19T13:46:00Z | BUY | ASTS | 3.2370 | 43.25 | 140.00 | gap_and_go: +6.4% vs prev 40.64, open 42.29; near HOD 43.40 on ~2.8M vol in 15m. Risk-on open (QQQ +1.4%, SPY +0.5%). Stop 42.40, target 44.75 (fixed target per AA lesson). Yahoo 1m. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -206,3 +207,4 @@
 - 2026-10-16T17:42:30Z — total $496.76, cash $496.76 (Stock Bot mark, 12:42 PM CT, no trade; all cash; SPY 765.5 (−0.9% from open), QQQ 714.1 (−1.4%), IWM 271.4 (−1.4%) risk-off at lows; energy breakout cluster USO/COP/XLE/OXY/SM/MUR skipped — breakout_high_vol thin edge, risk-off tape)
 - 2026-10-16T18:42:59Z — total $496.76, cash $496.76 (Stock Bot mark, 1:43 PM CT, no trade; all cash; SPY 762.3 (−1.2%), QQQ 710.2 (−2.4%), IWM 270.5 (−1.7%) risk-off at new lows; signals mostly day-low bounces/volume-down, energy breakouts NOG/PR/RRC/FMX failing into fades — skipped)
 - 2026-10-16T19:42:30Z — total $496.76, cash $496.76 (Stock Bot mark, 2:42 PM CT, no trade; all cash into Friday close; SPY 762.4 (−1.4% from open), QQQ 709.1 (−2.3%), IWM 270.2 (−1.9%) risk-off near lows; late LMT/DNOW/CRGY breakouts skipped — thin edge, <20m left, no weekend hold)
+- 2026-10-19T13:46:00Z — total $496.76, cash $356.76 (bought ASTS 3.2370 @ 43.25 on gap_and_go; SPY 767 (+0.5%), QQQ ~720 (+1.4%), IWM 271 (+0.3%) risk-on open; skipped WDC/APLD/MANE)
