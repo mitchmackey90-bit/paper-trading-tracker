@@ -2,12 +2,11 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $356.76
+- Cash: $494.01
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| ASTS | 3.2370 | 43.25 | 140.00 | 42.40 | 44.75 |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -23,6 +22,7 @@
 | 2026-10-16T13:44:54Z | BUY | AA | 3.2695 | 42.82 | 140.00 | gap_and_go: +6.0% vs prev 40.41, open 41.42; grinding HOD (1m 42.65→42.82, H 42.95) on ~1.4M vol. Materials, not tech — QQQ −0.8% but IWM green. Stop 42.1 (under 13:35 base), target 44.3. Yahoo 1m 2026-10-16T13:44:54Z. |
 | 2026-10-16T15:45:00Z | SELL | AA | 3.2695 | 44.30 | 144.84 | Target hit: 1m high 44.35 at 15:03Z (10:03 AM CT), before trailing stop 43.20 was touched (15:29Z). Fill at target. PnL vs $140 ≈ +$4.84 (+3.5%). Last 43.14. Yahoo 1m. |
 | 2026-10-19T13:46:00Z | BUY | ASTS | 3.2370 | 43.25 | 140.00 | gap_and_go: +6.4% vs prev 40.64, open 42.29; near HOD 43.40 on ~2.8M vol in 15m. Risk-on open (QQQ +1.4%, SPY +0.5%). Stop 42.40, target 44.75 (fixed target per AA lesson). Yahoo 1m. |
+| 2026-10-19T18:50:30Z | SELL | ASTS | 3.2370 | 42.40 | 137.25 | Stop hit: 1m low 42.395 at 18:35Z (1:35 PM CT) vs stop 42.40, midday fade after failing at 43.77. Fill at stop. PnL ≈ -$2.75 (-2.0%). Last 42.73. Yahoo 1m. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -212,3 +212,4 @@
 - 2026-10-19T16:04:18Z — total $497.28, cash $356.76 (mark, no trade; ASTS 43.41 marked; stop 42.40 / target 44.75 intact; post-entry LOD 42.42)
 - 2026-10-19T16:43:30Z — total $497.25, cash $356.76 (mark, 11:43 AM CT, no trade; ASTS 43.40, low since entry 42.42 vs stop 42.40, high 43.68 vs target 44.75 — no hit; SPY 768.3 (+0.7%), QQQ 721.5 (+1.7%), IWM 271.8; midday signals only VWAP flips/day-low bounces, skipped)
 - 2026-10-19T17:43:50Z — total $495.86, cash $356.76 (mark, 12:43 PM CT, no trade; ASTS 42.97, low since entry 42.42 vs stop 42.40, high 43.77 vs target 44.75 — no hit; SPY 767.3 (+0.0% from open), QQQ 719.4 (faded to flat from open), IWM 271.2; midday signals only VWAP flips/day-low bounces, skipped)
+- 2026-10-19T18:50:30Z — total $494.01, cash $494.01 (ASTS stopped @ 42.40 at 1:35 PM CT, -$2.75; all cash; SPY 767.7 (+0.1% from open), QQQ 719.5 (flat from open), IWM 271.2; late signals only VWAP reclaims/day-low bounces, no new entry)
