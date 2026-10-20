@@ -215,3 +215,4 @@
 - 2026-10-19T18:50:30Z — total $494.01, cash $494.01 (ASTS stopped @ 42.40 at 1:35 PM CT, -$2.75; all cash; SPY 767.7 (+0.1% from open), QQQ 719.5 (flat from open), IWM 271.2; late signals only VWAP reclaims/day-low bounces, no new entry)
 - 2026-10-19T19:50:30Z — total $494.01, cash $494.01 (mark, 2:50 PM CT, no trade; all cash into close; SPY 767.1 (flat from open), QQQ 718.8 (flat), IWM 271.3 (−0.3%); <10m left, no new entry)
 - 2026-10-20T13:47:54Z — total $494.01, cash $494.01 (mark, 8:48 AM CT, no trade; all cash; SPY 765.4 (−0.1%), QQQ 712.0 (−0.4%) soft, IWM 272.9 (+0.5% from open); gap_and_go EFX/HAS/NOC/TRU already +3–5% from open into soft QQQ, skipped after ASTS gap stop-out)
+- 2026-10-20T14:49:18Z — total $494.01, cash $494.01 (mark, 9:49 AM CT, no trade; all cash; SPY 771.2 (+0.7% from open), QQQ 721.0 (+1.0%), IWM 276.3 (+1.7%) risk-on rally; broad breakout_high_vol cluster AMD/COIN/NVDA/TSLA/GS skipped — n=594 ~50% win, no edge)
