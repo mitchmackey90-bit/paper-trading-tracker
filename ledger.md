@@ -2,11 +2,12 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $494.01
+- Cash: $370.98
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
+| SPOT | 0.2113 | 582.23 | 123.03 | 561.00 | trail |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -23,6 +24,7 @@
 | 2026-10-16T15:45:00Z | SELL | AA | 3.2695 | 44.30 | 144.84 | Target hit: 1m high 44.35 at 15:03Z (10:03 AM CT), before trailing stop 43.20 was touched (15:29Z). Fill at target. PnL vs $140 ≈ +$4.84 (+3.5%). Last 43.14. Yahoo 1m. |
 | 2026-10-19T13:46:00Z | BUY | ASTS | 3.2370 | 43.25 | 140.00 | gap_and_go: +6.4% vs prev 40.64, open 42.29; near HOD 43.40 on ~2.8M vol in 15m. Risk-on open (QQQ +1.4%, SPY +0.5%). Stop 42.40, target 44.75 (fixed target per AA lesson). Yahoo 1m. |
 | 2026-10-19T18:50:30Z | SELL | ASTS | 3.2370 | 42.40 | 137.25 | Stop hit: 1m low 42.395 at 18:35Z (1:35 PM CT) vs stop 42.40, midday fade after failing at 43.77. Fill at stop. PnL ≈ -$2.75 (-2.0%). Last 42.73. Yahoo 1m. |
+| 2026-10-22T19:55:40Z | BUY | SPOT | 0.2113 | 582.23 | 123.03 | Swing entry: post-earnings gap +10.8% to new 50d high on 2.8x avg volume, closing near HOD 588.9; RS +17 pts vs SPY (63d), revenue +14%; earnings risk now behind it. SPY above 200d. ~25% size. Stop 561 (under gap-day low 562.94, −3.6%), trail up as it rises. Yahoo. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -224,3 +226,4 @@
 - 2026-10-21T13:53:59Z — total $494.01, cash $494.01 (first swing check, 8:52 AM CT, no trade; SPY 770.6 above 200d 723 — regime OK; TEAM at new 52w high 225 (rev +28%, RS +176% vs SPY) but volume below avg and earnings Nov 5 — watchlist, recheck PM for volume; ISRG 50d breakout gapped down, skipped; new swing_scan.py)
 - 2026-10-21T19:51:17Z — total $494.01, cash $494.01 (swing check, 2:50 PM CT, no trade; SPY 773.8 above 200d 723 — regime OK; TEAM new 52w high 226.4 but volume only 0.57x avg near close and earnings Nov 5 — still no entry; TSLA/RBLX 50d breakouts lack RS/volume, skipped)
 - 2026-10-22T13:51:18Z — total $494.01, cash $494.01 (swing check, 8:52 AM CT, no trade; SPY 765.7 above 200d 723.6 — regime OK but below 50d 767; TEAM new 52w high 228.2 again, volume only 0.09x avg 20m in (≈0.8x pace) with earnings Nov 5 — still no entry; SPOT/NOW/ZS 50d breakouts on light volume, far off 52w highs, skipped)
+- 2026-10-22T19:55:40Z — total $494.01, cash $370.98 (swing check, 2:57 PM CT: bought SPOT 0.2113 @ 582.23 on post-earnings 50d breakout, 2.8x vol, stop 561; SPY 763.6 above 200d 723.6, below 50d 767; TEAM faded to 222.6 on 0.54x vol, skipped)
