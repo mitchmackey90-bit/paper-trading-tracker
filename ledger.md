@@ -2,11 +2,12 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $489.52
+- Cash: $364.45
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
+| LLY | 0.0900 | 1389.70 | 125.07 | 1315 | trail |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -26,6 +27,7 @@
 | 2026-10-22T19:55:40Z | BUY | SPOT | 0.2113 | 582.23 | 123.03 | Swing entry: post-earnings gap +10.8% to new 50d high on 2.8x avg volume, closing near HOD 588.9; RS +17 pts vs SPY (63d), revenue +14%; earnings risk now behind it. SPY above 200d. ~25% size. Stop 561 (under gap-day low 562.94, −3.6%), trail up as it rises. Yahoo. |
 | 2026-10-27T13:48:00Z | SELL | SPOT | 0.2113 | 561.00 | 118.54 | Stop hit: 1m low pierced 561 at 13:48Z (8:48 AM CT), day-4 breakout failure back into gap zone. Fill at stop. PnL ≈ -$4.49 (-3.6%). Last 558.21. Yahoo 1m. |
 
+| 2026-10-29T13:52:00Z | BUY | LLY | 0.0900 | 1389.70 | 125.07 | Swing entry: earnings gap +7.8% to new 52w high (prior high 1321) on heavy early volume (~0.5x avg day in 20 min); revenue +48%, EPS +26%, RS +18 pts vs SPY (63d). SPY above 200d. ~25% size. Stop 1315 (under breakout level, −5.4%), trail up. Yahoo. |
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -236,3 +238,4 @@
 - 2026-10-27T19:53:00Z — total $489.52, cash $489.52 (swing check, 2:53 PM CT, no trade; all cash; SPY 770.4 above 200d 724.8 and back above 50d 766.7 — regime OK; TSLA 50d breakout 1.02x vol but 18% off 52w high, ZS/RBLX light vol — skipped)
 - 2026-10-28T13:55:29Z — total $489.52, cash $489.52 (swing check, 8:55 AM CT, no trade; all cash; SPY 770.4 above 200d 725.2 and 50d 766.8 — regime OK; TSLA 50d breakout 0.2x vol, 19% off 52w high, RBLX 59% off high — skipped; LLY/ABBV within 2.5% of highs, watchlist)
 - 2026-10-28T19:54:08Z — total $489.52, cash $489.52 (swing check, 2:54 PM CT, no trade; all cash; SPY 772.2 above 200d 725.2 and 50d 766.8 — regime OK; TSLA 50d breakout 0.81x vol, 19% off 52w high, RBLX 60% off high — skipped; LLY/ABBV ~2% off highs on light vol, watchlist)
+- 2026-10-29T13:52:00Z — total $489.52, cash $364.45 (swing check, 8:52 AM CT: bought LLY 0.09 @ 1389.70 on earnings gap to new 52w high, heavy volume, stop 1315; SPY 768.2 above 200d 725.6 and 50d 766.9 — regime OK; ABBV 52w high on 0.09x vol, AAPL/VRTX near highs light vol — skipped)
