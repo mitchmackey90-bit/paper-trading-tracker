@@ -7,7 +7,7 @@
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
 |---|---|---|---|---|---|
-| LLY | 0.0900 | 1389.70 | 125.07 | 1315 | trail |
+| LLY | 0.0900 | 1389.70 | 125.07 | 1330 | trail |
 
 ## Trades log
 | time_utc | action | ticker | qty | price | total | reason |
@@ -240,3 +240,4 @@
 - 2026-10-28T19:54:08Z — total $489.52, cash $489.52 (swing check, 2:54 PM CT, no trade; all cash; SPY 772.2 above 200d 725.2 and 50d 766.8 — regime OK; TSLA 50d breakout 0.81x vol, 19% off 52w high, RBLX 60% off high — skipped; LLY/ABBV ~2% off highs on light vol, watchlist)
 - 2026-10-29T13:52:00Z — total $489.52, cash $364.45 (swing check, 8:52 AM CT: bought LLY 0.09 @ 1389.70 on earnings gap to new 52w high, heavy volume, stop 1315; SPY 768.2 above 200d 725.6 and 50d 766.9 — regime OK; ABBV 52w high on 0.09x vol, AAPL/VRTX near highs light vol — skipped)
 - 2026-10-29T19:52:00Z — total $488.17, cash $364.45 (swing check, 2:52 PM CT, no trade; LLY 1374.72 (−1.1% vs entry), day low 1330 > stop 1315, stop held; SPY 768.4 above 200d 725.6 and 50d 766.9 — regime OK; ABBV 52w high on 0.56x vol, AAPL 0.7% off high on 0.63x — skipped)
+- 2026-10-30T13:50:33Z — total $492.62, cash $364.45 (swing check, 8:51 AM CT, no trade; LLY 1424.09 (+2.5% vs entry), new high 1449.68, day low 1417 > stop; stop trailed 1315→1330 (under gap-day low); SPY 760.5 above 200d 726.0, below 50d 766.9 — regime OK, no chasing; VRTX/ABBV 52w highs on early light vol, AAPL 1.8% off high — skipped, watch PM)
