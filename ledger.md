@@ -29,6 +29,8 @@
 
 | 2026-10-29T13:52:00Z | BUY | LLY | 0.0900 | 1389.70 | 125.07 | Swing entry: earnings gap +7.8% to new 52w high (prior high 1321) on heavy early volume (~0.5x avg day in 20 min); revenue +48%, EPS +26%, RS +18 pts vs SPY (63d). SPY above 200d. ~25% size. Stop 1315 (under breakout level, −5.4%), trail up. Yahoo. |
 
+- 2026-11-04T20:58:00Z BUY MSFT 0.22 @ 556.09 ($122.34) — new 52w high on 1.81x vol, RS +11.5 vs SPY, SPY above 200d/50d; stop 540 (under day low 542.34)
+
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
 - 2026-10-12T13:55:49Z — total $500.00, cash $100.00 (opened FRO, DHT, ASTS)
@@ -247,3 +249,4 @@
 - 2026-11-03T14:48:41Z — total $493.42, cash $364.45 (swing check, 8:49 AM CT, no trade; LLY 1433.01 (+3.1% vs entry), day low 1393.6 > stop 1330, stop held; SPY 753.8 above 200d 726.7, below 50d 766.4 — regime OK, no chasing; no breakouts on scan — skipped)
 - 2026-11-03T20:54:00Z — total $491.00, cash $364.45 (swing check, 2:54 PM CT, no trade; LLY 1406.10 (+1.2% vs entry), day low 1393.5 > stop 1330, stop held; SPY 754.0 above 200d 726.7, below 50d 766.4 — regime OK; SPOT 50d breakout on 0.66x vol, 10% off 52w high — skipped)
 - 2026-11-04T14:47:55Z — total $492.91, cash $364.45 (swing check, 8:49 AM CT, no trade; LLY 1427.31 (+2.7% vs entry), day low 1423.7 > stop 1330, stop held; SPY 767.9 above 200d 727.1 and back above 50d 766.5 — regime OK; MSFT 52w high on 0.34x early vol, SPOT/ISRG 50d breakouts on light vol and 7–21% off highs — skipped, recheck PM)
+- 2026-11-04T20:58:00Z — total $492.06, cash $242.11 (swing check, 2:58 PM CT: bought MSFT 0.22 @ 556.09 on 52w-high breakout, 1.81x vol, stop 540; LLY 1417.93 (+2.0% vs entry), day low 1401.6 > stop 1330, stop held; SPY 766.5 above 200d 727.1 and 50d 766.5 — regime OK; AAPL 0.6% off high, DUOL/ISRG/SPOT 50d breakouts far off highs — skipped)
