@@ -2,7 +2,7 @@
 
 - Start: Mon Oct 12 2026
 - Starting capital: $500.00
-- Cash: $364.45
+- Cash: $360.91
 
 ## Holdings
 | ticker | qty | avg_cost | cost_basis | stop | target |
@@ -30,6 +30,7 @@
 | 2026-10-29T13:52:00Z | BUY | LLY | 0.0900 | 1389.70 | 125.07 | Swing entry: earnings gap +7.8% to new 52w high (prior high 1321) on heavy early volume (~0.5x avg day in 20 min); revenue +48%, EPS +26%, RS +18 pts vs SPY (63d). SPY above 200d. ~25% size. Stop 1315 (under breakout level, −5.4%), trail up. Yahoo. |
 
 - 2026-11-04T20:58:00Z BUY MSFT 0.22 @ 556.09 ($122.34) — new 52w high on 1.81x vol, RS +11.5 vs SPY, SPY above 200d/50d; stop 540 (under day low 542.34)
+- 2026-11-05T15:25:00Z SELL MSFT 0.22 @ 540.00 ($118.80, −$3.54) — stop hit at 9:25 AM CT as SPY fell ~3.9%; breakout failed day 1
 
 ## Value history (append-only)
 - 2026-10-12T13:46:10Z — total $500.00, cash $500.00
@@ -251,3 +252,4 @@
 - 2026-11-04T14:47:55Z — total $492.91, cash $364.45 (swing check, 8:49 AM CT, no trade; LLY 1427.31 (+2.7% vs entry), day low 1423.7 > stop 1330, stop held; SPY 767.9 above 200d 727.1 and back above 50d 766.5 — regime OK; MSFT 52w high on 0.34x early vol, SPOT/ISRG 50d breakouts on light vol and 7–21% off highs — skipped, recheck PM)
 - 2026-11-04T20:58:00Z — total $492.06, cash $242.11 (swing check, 2:58 PM CT: bought MSFT 0.22 @ 556.09 on 52w-high breakout, 1.81x vol, stop 540; LLY 1417.93 (+2.0% vs entry), day low 1401.6 > stop 1330, stop held; SPY 766.5 above 200d 727.1 and 50d 766.5 — regime OK; AAPL 0.6% off high, DUOL/ISRG/SPOT 50d breakouts far off highs — skipped)
 - 2026-11-05T14:48:30Z — total $491.36, cash $242.11 (swing check, 8:49 AM CT, no trade; LLY 1432.47 (+3.1% vs entry), low 1417.9 > stop 1330; MSFT 546.94 (−1.6%), low 546.4 > stop 540, stops held; SPY 755.7 above 200d 727.5, below 50d 766.3 — regime OK, no chasing; APP 50d breakout 52% off high, ABBV/AAPL/ELF/SPOT near highs on light early vol — skipped)
+- 2026-11-05T20:47:23Z — total $484.33, cash $360.91 (swing check, 2:47 PM CT: MSFT stopped @ 540 at 9:25 AM CT, −$3.54; LLY 1371.31 (−1.3% vs entry), hit 1453 then faded, low 1368.4 > stop 1330, stop held; SPY 735.6 (−3.9%) still above 200d 727.4, well below 50d 765.9 — regime OK but weak, no new buys; ELF/AAPL/ABBV/APP breakouts reversed on the selloff — skipped)
