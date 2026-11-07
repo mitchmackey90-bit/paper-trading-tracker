@@ -57,10 +57,10 @@ Chart.defaults.color='#cbd5e1';Chart.defaults.borderColor='#334155';Chart.defaul
 
 const TZ='America/Chicago';
 function fmtCT(iso,opts){return new Date(iso).toLocaleString('en-US',Object.assign({timeZone:TZ},opts))}
-function dayTime(iso){return fmtCT(iso,{weekday:'short',hour:'numeric',minute:'2-digit'})}
+function dayTime(iso){return fmtCT(iso,{weekday:'short',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
 function shortDayTime(iso){
-  const parts=new Intl.DateTimeFormat('en-US',{timeZone:TZ,weekday:'short',hour:'numeric',hour12:true}).formatToParts(new Date(iso));
-  const wd=parts.find(p=>p.type==='weekday').value;
+  const parts=new Intl.DateTimeFormat('en-US',{timeZone:TZ,month:'short',day:'numeric',hour:'numeric',hour12:true}).formatToParts(new Date(iso));
+  const wd=parts.find(p=>p.type==='month').value+' '+parts.find(p=>p.type==='day').value;
   const hour=parts.find(p=>p.type==='hour').value;
   const ap=(parts.find(p=>p.type==='dayPeriod')||{value:'a'}).value.charAt(0).toLowerCase();
   return wd+' '+hour+ap;
@@ -68,6 +68,10 @@ function shortDayTime(iso){
 function table(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)'));if(!m)return[];
  const L=m[1].split('\n').filter(l=>l.trim().startsWith('|'));if(L.length<2)return[];const sp=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(s=>s.trim());
  const h=sp(L[0]).map(s=>s.toLowerCase());return L.slice(2).map(l=>{const c=sp(l),o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
+function bulletTrades(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)'));if(!m)return[];
+ const re=/^\s*[-*]\s+(\d{4}-\d{2}-\d{2}T[\d:]+Z)\s+(BUY|SELL)\s+([A-Z.\-]+)\s+([\d.]+)\s*@\s*\$?([\d.,]+)\s*\(\$?([\d.,]+)[^)]*\)\s*(?:[—–-]+\s*(.*))?$/i;
+ return m[1].split('\n').map(l=>l.match(re)).filter(Boolean).map(x=>({time_utc:x[1],action:x[2].toUpperCase(),ticker:x[3],qty:x[4],price:x[5].replace(/,+$/,''),total:x[6].replace(/,+$/,''),reason:(x[7]||'').trim()}))}
+function allTrades(md){return table(md,'Trades log').concat(bulletTrades(md,'Trades log')).sort((a,b)=>(Date.parse(a.time_utc)||0)-(Date.parse(b.time_utc)||0))}
 const num=x=>parseFloat(String(x||'').replace(/[$,]/g,''));
 const money=x=>isNaN(num(x))?String(x||'–'):'$'+x;
 async function getText(u,opts){let err;for(let i=0;i<3;i++){try{const r=await fetch(u+(u.includes('?')?'&':'?')+'r='+i,opts);if(!r.ok)throw new Error(u.split('?')[0]+' HTTP '+r.status);return await r.text()}catch(e){err=e;await new Promise(res=>setTimeout(res,1500))}}throw err}
@@ -93,7 +97,7 @@ async function load(){
  ]);
  const rows=parseValuesCsv(csv);
  if(!rows.length)throw new Error('values.csv has no data points');
- const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings').filter(h=>{const t=(h.ticker||'').replace(/\*/g,'').trim().toLowerCase();return t&&t!=='none'&&t!=='(none)'&&!isNaN(num(h.qty))&&num(h.qty)>0;}),tr=table(md,'Trades log');
+ const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings').filter(h=>{const t=(h.ticker||'').replace(/\*/g,'').trim().toLowerCase();return t&&t!=='none'&&t!=='(none)'&&!isNaN(num(h.qty))&&num(h.qty)>0;}),tr=allTrades(md);
  const d=last.v-500,cls=d>=0?'g':'r';
  $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
  $('cash').textContent=f(last.c);const inv=hold.reduce((s,h)=>s+(num(h.cost_basis)||0),0);$('inv').textContent=f(inv);
