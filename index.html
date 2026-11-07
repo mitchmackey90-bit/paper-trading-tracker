@@ -69,6 +69,8 @@ function table(md,name){const m=md.match(new RegExp('## '+name+'[^\\n]*\\n([\\s\
  const L=m[1].split('\n').filter(l=>l.trim().startsWith('|'));if(L.length<2)return[];const sp=l=>l.trim().replace(/^\||\|$/g,'').split('|').map(s=>s.trim());
  const h=sp(L[0]).map(s=>s.toLowerCase());return L.slice(2).map(l=>{const c=sp(l),o={};h.forEach((k,i)=>o[k]=c[i]);return o})}
 const num=x=>parseFloat(String(x||'').replace(/[$,]/g,''));
+const money=x=>isNaN(num(x))?String(x||'–'):'$'+x;
+async function getText(u,opts){let err;for(let i=0;i<3;i++){try{const r=await fetch(u+(u.includes('?')?'&':'?')+'r='+i,opts);if(!r.ok)throw new Error(u.split('?')[0]+' HTTP '+r.status);return await r.text()}catch(e){err=e;await new Promise(res=>setTimeout(res,1500))}}throw err}
 function parseValuesCsv(csv){
   return csv.trim().split(/\r?\n/).slice(1).map(l=>l.split(',')).filter(r=>r.length>=3&&r[0]&&!isNaN(+r[1])&&!isNaN(+r[2]))
     .map(r=>({t:r[0].trim(),v:+r[1],c:+r[2]}))
@@ -86,10 +88,11 @@ async function load(){
  const bust='?t='+Date.now();
  const opts={cache:'no-store'};
  const[md,csv]=await Promise.all([
-  fetch('ledger.md'+bust,opts).then(r=>r.text()),
-  fetch('values.csv'+bust,opts).then(r=>r.text())
+  getText('ledger.md'+bust,opts),
+  getText('values.csv'+bust,opts)
  ]);
  const rows=parseValuesCsv(csv);
+ if(!rows.length)throw new Error('values.csv has no data points');
  const last=rows[rows.length-1]||{t:'',v:500,c:500};const hold=table(md,'Holdings').filter(h=>{const t=(h.ticker||'').replace(/\*/g,'').trim().toLowerCase();return t&&t!=='none'&&t!=='(none)'&&!isNaN(num(h.qty))&&num(h.qty)>0;}),tr=table(md,'Trades log');
  const d=last.v-500,cls=d>=0?'g':'r';
  $('tv').textContent=f(last.v);$('tv').className='v '+cls;$('gain').textContent=(d>=0?'+':'-')+f(Math.abs(d))+' ('+(d/5).toFixed(2)+'%)';$('gain').className='v '+cls;
@@ -178,13 +181,14 @@ async function load(){
  mk('pnl',{type:'bar',data:{labels:pl.map(p=>p.k),datasets:[{label:'P&L $',data:pl.map(p=>+p.v.toFixed(2)),backgroundColor:pl.map(p=>p.v>=0?'#22c55e':'#ef4444')}]},
   options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'$'+v}}}}});
  $('pnlnote').textContent=haveU?'':'Ledger has no live prices per holding, so open P&L is shown combined (total value − cash − cost basis).';
- const rk=hold.filter(h=>h.stop&&h.target);
+ const rk=hold.filter(h=>!isNaN(num(h.stop))||!isNaN(num(h.target)));
+ const pct=(x,h)=>isNaN(num(x))?null:+((num(x)/num(h.avg_cost)-1)*100).toFixed(2);
  mk('risk',{type:'bar',data:{labels:rk.map(h=>h.ticker),datasets:[
-  {label:'Downside to stop',data:rk.map(h=>[+((num(h.stop)/num(h.avg_cost)-1)*100).toFixed(2),0]),backgroundColor:'#ef4444aa'},
-  {label:'Upside to target',data:rk.map(h=>[0,+((num(h.target)/num(h.avg_cost)-1)*100).toFixed(2)]),backgroundColor:'#22c55eaa'}]},
-  options:{responsive:true,indexAxis:'y',maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>v+'%'}},y:{stacked:true}},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+(c.raw[0]||c.raw[1])+'%'}}}}});
+  {label:'Downside to stop',data:rk.map(h=>{const v=pct(h.stop,h);return v==null?null:[v,0]}),backgroundColor:'#ef4444aa'},
+  {label:'Upside to target',data:rk.map(h=>{const v=pct(h.target,h);return v==null?null:[0,v]}),backgroundColor:'#22c55eaa'}]},
+  options:{responsive:true,indexAxis:'y',maintainAspectRatio:false,scales:{x:{ticks:{callback:v=>v+'%'}},y:{stacked:true}},plugins:{tooltip:{callbacks:{label:c=>c.raw?c.dataset.label+': '+(c.raw[0]||c.raw[1])+'%':''}}}}});
  $('hold').innerHTML='<tr><th>Ticker</th><th>Qty</th><th>Avg cost</th><th>Cost basis</th><th class=r>Stop</th><th class=g>Target</th></tr>'+
-  hold.map(h=>`<tr><td><b>${h.ticker}</b></td><td>${h.qty}</td><td>$${h.avg_cost}</td><td>$${h.cost_basis}</td><td class=r>$${h.stop}</td><td class=g>$${h.target}</td></tr>`).join('');
+  hold.map(h=>`<tr><td><b>${h.ticker}</b></td><td>${h.qty}</td><td>$${h.avg_cost}</td><td>$${h.cost_basis}</td><td class=r>${money(h.stop)}</td><td class=g>${money(h.target)}</td></tr>`).join('');
  $('trades').innerHTML='<tr><th>Time</th><th>Action</th><th>Ticker</th><th>Qty</th><th>Price</th><th>Total</th></tr>'+
   tr.slice().reverse().slice(0,25).map(t=>{const s=(t.action||'').toUpperCase().startsWith('SELL')?'sell':'buy';
   return `<tr class=${s}><td>${dayTime(t.time_utc)}</td><td><span class=badge>${t.action}</span></td><td><b>${t.ticker}</b></td><td>${t.qty}</td><td>$${t.price}</td><td>$${t.total}</td></tr><tr class=${s}><td colspan=6 class=why>${t.reason||''}</td></tr>`}).join('');
