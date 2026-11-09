@@ -256,3 +256,4 @@
 
 - 2026-11-06T15:44:53Z — total $483.84, cash $360.91 (swing check, 9:42 AM CT, no trade; LLY 1365.94 (−1.7% vs entry), day low 1333.22 > stop 1330, stop held; SPY 738.6 above 200d 727.7, below 50d 765.2 — regime OK but weak, no new buys; lone APP 50d breakout 49% off 52w high on 0.56x vol — skipped)
 - 2026-11-06T20:54:42Z — total $483.74, cash $360.91 (swing check, 2:54 PM CT, no trade; LLY 1364.82 (−1.8% vs entry), day low 1333.22 > stop 1330, stop held; SPY 735.5 above 200d 727.7, below 50d 765.2 — regime OK but weak, no new buys; lone APP 50d breakout 48% off 52w high on 1.91x vol — skipped)
+- 2026-11-09T14:54:08Z — total $485.98, cash $360.91 (swing check, 8:54 AM CT, no trade; LLY 1389.65 (0.0% vs entry), day low 1364.6 > stop 1330, stop held; SPY 747.7 above 200d 728.0, below 50d 764.8 — regime OK but weak, no new buys; AMZN 50d breakout 0.29x vol, APP 46% off high — skipped)
